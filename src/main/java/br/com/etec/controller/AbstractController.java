@@ -213,10 +213,10 @@ public abstract class AbstractController implements ActionListener, WindowListen
     public void keyPressed(KeyEvent keyEvent) {
         switch (keyEvent.getKeyCode()) {
             case KeyEvent.VK_ENTER:
-                evaluateAction(keyEvent.getSource().getClass());
+//                evaluateAction(keyEvent.getSource().getClass());
                 break;
             case KeyEvent.VK_ESCAPE:
-                evaluateEscape(keyEvent.getSource().getClass());
+//                evaluateEscape(keyEvent.getSource().getClass());
                 break;
         }
         AbstractAction action = getAction(keyEvent);
