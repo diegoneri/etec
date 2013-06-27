@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="1.0" xmlns="http://java.sun.com/xml/ns/persistence">
+  <persistence-unit name="eteab01PU">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>br.com.etec.model.CategoriaProfessor</class>
+    <class>br.com.etec.model.Atribuicao</class>
+    <class>br.com.etec.model.Professor</class>
+    <class>br.com.etec.model.Habilitacao</class>
+    <class>br.com.etec.model.Periodo</class>
+    <class>br.com.etec.model.TipoContrato</class>
+    <class>br.com.etec.model.Turma</class>
+    <class>br.com.etec.model.Disciplina</class>
+    <class>br.com.etec.model.PeriodoLetivo</class>
+    <class>br.com.etec.model.GradeCurricular</class>
+    <class>br.com.etec.model.Modulo</class>
+    <class>br.com.etec.model.TipoAtribuicao</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <!--property name="hibernate.hbm2ddl.auto" value="update" /-->
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/eteab01"/>
+      <property name="javax.persistence.jdbc.password" value="eteab1655"/>
+      <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+      <property name="javax.persistence.jdbc.user" value="eteab01"/>
+    </properties>
+  </persistence-unit>
+  <persistence-unit name="etecabPU">
+    <provider>org.hibernate.ejb.HibernatePersistence</provider>
+    <class>br.com.etec.model.Login</class>
+    <properties>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+      <property name="hibernate.show_sql" value="true"/>
+      <property name="hibernate.format_sql" value="true"/>
+    </properties>
+  </persistence-unit>  
+</persistence>

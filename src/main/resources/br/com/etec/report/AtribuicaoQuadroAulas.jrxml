@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Quadro de Aulas" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="resources.RelatorioQuadroAulas" uuid="93632863-d8dd-425b-aa27-d82774fd451e">
+	<property name="ireport.zoom" value="3.0"/>
+	<property name="ireport.x" value="1267"/>
+	<property name="ireport.y" value="59"/>
+	<style name="BASE" forecolor="#000000" hAlign="Justified" vAlign="Middle" fontName="Arial" fontSize="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman"/>
+	<style name="SUBTITULO" style="BASE" hAlign="Center" fontSize="12" isBold="true"/>
+	<style name="BASE_NEGRITO" style="BASE" isBold="true"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#ABAFBE">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6ECFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F4F4F4"/>
+		</conditionalStyle>
+	</style>
+	<style name="TITULO_COLUNA" style="BASE_NEGRITO" mode="Opaque" backcolor="#ABAFBE" hAlign="Center" fontSize="8">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+	</style>
+	<style name="CELULA_TABELA" style="BASE" mode="Opaque" backcolor="#FFFFFF" hAlign="Center" fontSize="8">
+		<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3"/>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($F{Tipo}.equals("D") || $F{Tipo}.equals("Y"))]]></conditionExpression>
+			<style backcolor="#F4F4F4"/>
+		</conditionalStyle>
+	</style>
+	<style name="TITULO_COLUNA_BORDA" style="TITULO_COLUNA">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="SUBTITULO_BORDA" style="SUBTITULO" hAlign="Center" fontSize="12" isBold="true">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="CELULA_TABELA_BORDA" style="CELULA_TABELA" hAlign="Center" fontSize="8">
+		<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3">
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<style name="TITULO_COLUNA_BORDA_SEM_INF" style="TITULO_COLUNA">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="0.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<parameter name="P_ID_HABILITACAO" class="java.lang.String">
+		<defaultValueExpression><![CDATA["I"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ANO" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[2013]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_SEMESTRE" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[Select Unidade
+     , Turma
+	  , TipoEnsino
+	  , Habilitacao
+	  , Periodo
+	  , ComponenteCurricular
+	  , CHGrade
+	  , Tipo
+	  , Professor
+	  , Substitui
+	  , DeixouPara
+	  , SituacaoAula
+	  , Ano
+	  , Semestre
+  From ds_relatorio_quadro_aulas
+WHERE IdHabilitacao = $P{P_ID_HABILITACAO}
+  AND Ano = $P{P_ANO}
+  AND Semestre = $P{P_SEMESTRE}]]>
+	</queryString>
+	<field name="Unidade" class="java.lang.Integer"/>
+	<field name="Turma" class="java.lang.String"/>
+	<field name="TipoEnsino" class="java.lang.String"/>
+	<field name="Habilitacao" class="java.lang.String"/>
+	<field name="Periodo" class="java.lang.String"/>
+	<field name="ComponenteCurricular" class="java.lang.String"/>
+	<field name="CHGrade" class="java.lang.Float"/>
+	<field name="Tipo" class="java.lang.String"/>
+	<field name="Professor" class="java.lang.String"/>
+	<field name="Substitui" class="java.lang.String"/>
+	<field name="DeixouPara" class="java.lang.String"/>
+	<field name="SituacaoAula" class="java.lang.String"/>
+	<field name="Ano" class="java.lang.Integer"/>
+	<field name="Semestre" class="java.lang.Integer"/>
+	<variable name="V_CH_GRADE" class="java.lang.Float" resetType="Column">
+		<variableExpression><![CDATA[$F{Tipo}.equals("P") || $F{Tipo}.equals("X") ? $F{CHGrade} : null]]></variableExpression>
+	</variable>
+	<variable name="V_CH_DIVISAO" class="java.lang.Float" resetType="Column">
+		<variableExpression><![CDATA[$F{Tipo}.equals("D") || $F{Tipo}.equals("Y") ? $F{CHGrade} : null]]></variableExpression>
+	</variable>
+	<variable name="V_SOMA_CH_GRADE" class="java.lang.Float" resetType="Group" resetGroup="Turma" calculation="Sum">
+		<variableExpression><![CDATA[$V{V_CH_GRADE}]]></variableExpression>
+	</variable>
+	<variable name="V_SOMA_CH_DIVISAO" class="java.lang.Float" resetType="Group" resetGroup="Turma" calculation="Sum">
+		<variableExpression><![CDATA[$V{V_CH_DIVISAO}]]></variableExpression>
+	</variable>
+	<variable name="V_SOMA_TOTAL" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$F{CHGrade}]]></variableExpression>
+	</variable>
+	<variable name="V_PROFESSOR" class="java.lang.String">
+		<variableExpression><![CDATA[$F{DeixouPara} == null       ? ($F{Professor}.length() > 35 ? $F{Professor}.substring(0,34) : $F{Professor})      : ($F{Professor}.length() > 16 ? $F{Professor}.substring(0,15) : $F{Professor})        + " ("        + ($F{DeixouPara}.length() > 16 ? $F{DeixouPara}.substring(0,15) : $F{DeixouPara})        +")"]]></variableExpression>
+	</variable>
+	<variable name="V_SOMA_CH_GRADE_T" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{V_CH_GRADE}]]></variableExpression>
+	</variable>
+	<variable name="V_SOMA_CH_DIVISAO_T" class="java.lang.Float" calculation="Sum">
+		<variableExpression><![CDATA[$V{V_CH_DIVISAO}]]></variableExpression>
+	</variable>
+	<group name="Turma">
+		<groupExpression><![CDATA[$F{Turma}]]></groupExpression>
+		<groupFooter>
+			<band height="21">
+				<textField evaluationTime="Group" evaluationGroup="Turma" pattern="###0.0" isBlankWhenNull="true">
+					<reportElement uuid="cb7dfd2f-ba50-48ab-9b1f-372e50b38c03" style="TITULO_COLUNA_BORDA_SEM_INF" x="479" y="0" width="40" height="21"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{V_SOMA_CH_DIVISAO}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement uuid="d3cedead-88b8-4646-854d-a1106606145a" style="TITULO_COLUNA_BORDA_SEM_INF" x="519" y="0" width="282" height="21"/>
+					<textElement/>
+					<text><![CDATA[]]></text>
+				</staticText>
+				<textField evaluationTime="Group" evaluationGroup="Turma" pattern="###0.0" isBlankWhenNull="true">
+					<reportElement uuid="7543d606-f983-410d-8a3f-9dbec0689645" style="TITULO_COLUNA_BORDA_SEM_INF" x="439" y="0" width="40" height="21"/>
+					<textElement/>
+					<textFieldExpression><![CDATA[$V{V_SOMA_CH_GRADE}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Group" evaluationGroup="Turma">
+					<reportElement uuid="655e140b-5927-4033-9ae6-ff2bde2e0716" style="TITULO_COLUNA_BORDA_SEM_INF" x="0" y="0" width="439" height="21"/>
+					<textElement markup="none"/>
+					<textFieldExpression><![CDATA[$R{relatorio.cargahoraria} + " - " + $F{Turma}]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="0" y="0" width="1" height="20"/>
+				</line>
+				<line>
+					<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="801" y="0" width="1" height="20"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="2b167043-6568-4d76-a4a8-89586d03dac7" style="CELULA_TABELA_BORDA" x="0" y="0" width="802" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Habilitacao}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7451d92f-7164-4c62-af88-466e6d3d8629" style="TITULO_COLUNA_BORDA" x="0" y="0" width="37" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.unidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ca051095-81d3-4dcb-b054-36f6d9df5b6c" style="TITULO_COLUNA_BORDA" x="37" y="0" width="29" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.turma}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e7b50149-38b7-46de-9143-ac40242355ad" style="TITULO_COLUNA_BORDA" x="66" y="0" width="35" height="43"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.tipoensino}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="519c3d8f-e244-41d8-a9ec-8ce2ac0411ad" style="TITULO_COLUNA_BORDA" x="101" y="0" width="96" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.habilitacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d9b0fc6b-cfba-46aa-8d59-56f7846de235" style="TITULO_COLUNA_BORDA" x="197" y="0" width="41" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.periodo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bdbbdedc-129b-4f15-9a3e-9d1c24f50135" style="TITULO_COLUNA_BORDA" x="238" y="0" width="201" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.componentecurricular}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e401be9a-75d3-4681-90c4-6b4ad20f9f5f" style="TITULO_COLUNA_BORDA" x="439" y="0" width="40" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.chgrade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="de10edbb-cd15-41f6-b9d6-7745389e4f73" style="TITULO_COLUNA_BORDA" x="519" y="0" width="190" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.professor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="614f9a68-006e-4fc7-9823-eb58e6bf7d1e" style="TITULO_COLUNA_BORDA" x="709" y="0" width="92" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.situacaoaulas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="54dc3e6d-7540-4755-9005-c69162d8559b" style="TITULO_COLUNA_BORDA" x="479" y="0" width="40" height="43"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.chdivisao}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="0" y="0" width="1" height="43"/>
+			</line>
+			<line>
+				<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="801" y="0" width="1" height="43"/>
+			</line>
+			<line>
+				<reportElement uuid="1fa87db3-b7e6-460d-a0c6-d4645ee4b306" x="0" y="0" width="801" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="c882c9f7-c3e8-4b9e-aec1-79f774cf9cfb" style="CELULA_TABELA_BORDA" x="0" y="0" width="37" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{relatorio.codigo.unidade}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="7df95ab3-97ab-491c-851f-3a444588ee9d" style="CELULA_TABELA_BORDA" x="37" y="0" width="29" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Turma}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="fc87088d-bb5a-40d3-8c08-b0cf3aadbe26" style="CELULA_TABELA_BORDA" x="66" y="0" width="35" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TipoEnsino}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="2b167043-6568-4d76-a4a8-89586d03dac7" style="CELULA_TABELA_BORDA" x="101" y="0" width="96" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Habilitacao}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3bdefea5-c63b-4488-adcf-abd7bdbf8371" style="CELULA_TABELA_BORDA" x="197" y="0" width="41" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Periodo}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="88933d3e-b7d3-4657-a919-78109a9c8722" style="CELULA_TABELA_BORDA" x="238" y="0" width="201" height="20"/>
+				<textElement textAlignment="Justified"/>
+				<textFieldExpression><![CDATA[$F{ComponenteCurricular}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="d7606575-9578-479f-ac9e-161474d16815" style="CELULA_TABELA_BORDA" x="439" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{V_CH_GRADE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="3ca83115-88d8-49a5-912b-46df87dd6fac" style="CELULA_TABELA_BORDA" x="519" y="0" width="190" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{V_PROFESSOR}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="7fdae7a1-15ed-476d-a563-7829aced669f" style="CELULA_TABELA_BORDA" x="709" y="0" width="92" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{SituacaoAula}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="d7606575-9578-479f-ac9e-161474d16815" style="CELULA_TABELA_BORDA" x="479" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{V_CH_DIVISAO}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="0" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="801" y="0" width="1" height="20"/>
+			</line>
+		</band>
+	</detail>
+	<summary>
+		<band height="40" splitType="Stretch">
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="7543d606-f983-410d-8a3f-9dbec0689645" style="TITULO_COLUNA_BORDA" x="439" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{V_SOMA_CH_GRADE_T}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="cb7dfd2f-ba50-48ab-9b1f-372e50b38c03" style="TITULO_COLUNA_BORDA" x="479" y="0" width="40" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{V_SOMA_CH_DIVISAO_T}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0.0" isBlankWhenNull="true">
+				<reportElement uuid="7b35ba06-3c20-4dd3-baa3-29eb5326a9b7" style="TITULO_COLUNA_BORDA" x="439" y="20" width="362" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{V_SOMA_TOTAL}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d3cedead-88b8-4646-854d-a1106606145a" style="TITULO_COLUNA_BORDA" x="519" y="0" width="282" height="20"/>
+				<textElement/>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="4b904da0-65a8-470d-a920-132516a0e827" style="TITULO_COLUNA_BORDA" x="0" y="0" width="439" height="40"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.cargahoraria.total}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="1fa87db3-b7e6-460d-a0c6-d4645ee4b306" x="0" y="39" width="801" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="0" y="0" width="1" height="39"/>
+			</line>
+			<line>
+				<reportElement uuid="00c2fec2-25ee-4135-8de6-ca5549b97a81" x="801" y="0" width="1" height="39"/>
+			</line>
+		</band>
+	</summary>
+</jasperReport>

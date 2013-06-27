@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/data/jpa
+        http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+   
+    
+    <!-- Considera a estrutura de pacote para percorrer classes com as anotacoes de 
+  	 injecao de dependencia do Spring como: @Component, @Repository e @Service -->
+    <context:component-scan base-package="br.com.etec" />
+
+    <!-- Define as configuracoes JPA (veja o arquivo persistence.xml) -->
+    <bean id="entityManagerFactoryRemote"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSourceRemote" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="loadTimeWeaver"> 
+            <bean 
+                class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/> 
+        </property>        
+        <property name="persistenceUnitName" value="eteab01PU" />
+    </bean>    
+    
+    <!-- Ativa o controle transacional -->
+    <bean id="transactionManagerRemote" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactoryRemote" />
+    </bean>    
+    
+    <!-- Define a conexao com o banco de dados -->
+    <bean id="dataSourceRemote" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/eteab01"/>
+        <property name="username" value="eteab01"/>
+        <property name="password" value="eteab1655"/>
+    </bean>      
+    
+    <!-- Define as configuracoes JPA (veja o arquivo persistence.xml) -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <property name="loadTimeWeaver"> 
+            <bean 
+                class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver"/> 
+        </property>        
+        <property name="persistenceUnitName" value="etecabPU" />
+    </bean>
+    
+    <!-- Ativa o controle transacional -->
+    <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory" />
+    </bean>
+	
+    <!-- Define a conexao com o banco de dados -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/etecab"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>
+    </bean>      
+              
+    <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" >
+        <property name="defaultPersistenceUnitName" value="eteab01PU"/>
+    </bean>              
+    
+    <bean name="loginRepository" class="br.com.etec.repository.LoginRepository" >
+        <property name="entityManager" ref="entityManagerFactoryRemote"/>
+    </bean>
+    
+    <!-- Ativa a criacao dos repositorios no Spring Data JPA -->
+    <jpa:repositories base-package="br.com.etec.repository" entity-manager-factory-ref="entityManagerFactory" />
+    
+</beans>

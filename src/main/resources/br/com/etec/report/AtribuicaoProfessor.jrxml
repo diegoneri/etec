@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="AtribuicaoProfessor" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="resources.RelatorioProfessor" uuid="e892d8b4-2d44-40de-a458-01bfee6ab342">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="BASE" forecolor="#000000" hAlign="Justified" vAlign="Middle" fontName="Times New Roman" fontSize="11" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="Times-Roman"/>
+	<style name="SUBTITULO" style="BASE" hAlign="Center" fontSize="12" isBold="true"/>
+	<style name="BASE_NEGRITO" style="BASE" isBold="true"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#ABAFBE">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#E6ECFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[new Boolean($V{REPORT_COUNT}.intValue()%2==0)]]></conditionExpression>
+			<style backcolor="#F4F4F4"/>
+		</conditionalStyle>
+	</style>
+	<style name="TITULO_COLUNA" style="BASE_NEGRITO" fontSize="9">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2"/>
+	</style>
+	<style name="CELULA_TABELA" style="BASE" fontSize="10">
+		<box topPadding="1" leftPadding="3" bottomPadding="1" rightPadding="3"/>
+	</style>
+	<style name="TITULO_COLUNA_BORDA" style="TITULO_COLUNA">
+		<box topPadding="2" leftPadding="2" bottomPadding="2" rightPadding="2">
+			<pen lineWidth="0.5"/>
+			<topPen lineWidth="0.5"/>
+			<leftPen lineWidth="0.5"/>
+			<bottomPen lineWidth="0.5"/>
+			<rightPen lineWidth="0.5"/>
+		</box>
+	</style>
+	<style name="SUBTITULO_BORDA" style="SUBTITULO" hAlign="Center" fontSize="12" isBold="true">
+		<box>
+			<pen lineWidth="1.0"/>
+			<topPen lineWidth="1.0"/>
+			<leftPen lineWidth="1.0"/>
+			<bottomPen lineWidth="1.0"/>
+			<rightPen lineWidth="1.0"/>
+		</box>
+	</style>
+	<subDataset name="AtribuicaoDataset" uuid="2dc18bdc-1575-44d1-9afe-7588aadeb66f">
+		<parameter name="P_ANO" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[2013]]></defaultValueExpression>
+		</parameter>
+		<parameter name="P_SEMESTRE" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		</parameter>
+		<parameter name="P_PROFESSOR" class="java.lang.Integer" isForPrompting="false">
+			<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[select Professor
+      ,ComponenteCurricular
+      ,Turma
+      ,Habilitacao
+      ,CHLivre
+      ,CHSub
+      ,Substitui
+      ,DeixouPara
+      ,Tipo
+ from ds_relatorio_atribuicao_corpo 
+WHERE cdprf = $P{P_PROFESSOR}
+  AND ano = $P{P_ANO}
+  AND semestre = $P{P_SEMESTRE}]]>
+		</queryString>
+		<field name="Professor" class="java.lang.String"/>
+		<field name="ComponenteCurricular" class="java.lang.String"/>
+		<field name="Turma" class="java.lang.String"/>
+		<field name="Habilitacao" class="java.lang.String"/>
+		<field name="CHLivre" class="java.lang.Float"/>
+		<field name="CHSub" class="java.lang.Double"/>
+		<field name="Substitui" class="java.lang.String"/>
+		<field name="DeixouPara" class="java.lang.String"/>
+		<field name="Tipo" class="java.lang.String"/>
+		<variable name="V_CH_LIVRE" class="java.lang.Float" resetType="None">
+			<variableExpression><![CDATA[$F{CHSub} == null ? $F{CHLivre} : null]]></variableExpression>
+		</variable>
+		<variable name="V_OBSERVACOES" class="java.lang.String" resetType="None">
+			<variableExpression><![CDATA[$F{Substitui} == null   
+ ? ($F{DeixouPara} == null ? "" : "Deixou p/ " + $F{DeixouPara})   
+ : "Substitui " + $F{Substitui}]]></variableExpression>
+		</variable>
+		<variable name="V_SOMA_CH_LIVRE" class="java.lang.Float" calculation="Sum">
+			<variableExpression><![CDATA[$V{V_CH_LIVRE}]]></variableExpression>
+		</variable>
+		<variable name="V_SOMA_CH_SUB" class="java.lang.Float" calculation="Sum">
+			<variableExpression><![CDATA[$F{CHSub}]]></variableExpression>
+		</variable>
+	</subDataset>
+	<parameter name="P_SEMESTRE" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[Semestre]]></parameterDescription>
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_ANO" class="java.lang.Integer" isForPrompting="false">
+		<parameterDescription><![CDATA[Ano]]></parameterDescription>
+		<defaultValueExpression><![CDATA[2013]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_CODIGO_PROFESSOR" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[77]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT Professor
+     , Matricula
+     , RG
+     , Contrato
+     , Categoria
+     , TotalCH
+     , Inicio
+  FROM ds_relatorio_atribuicao_cabecalho
+ WHERE cdprf = $P{P_CODIGO_PROFESSOR}
+   AND ano = $P{P_ANO}
+   AND semestre = $P{P_SEMESTRE}]]>
+	</queryString>
+	<field name="Professor" class="java.lang.String"/>
+	<field name="Matricula" class="java.lang.Long"/>
+	<field name="RG" class="java.lang.String"/>
+	<field name="Contrato" class="java.lang.String"/>
+	<field name="Categoria" class="java.lang.String"/>
+	<field name="TotalCH" class="java.lang.Double"/>
+	<field name="Inicio" class="java.sql.Date"/>
+	<variable name="V_T" class="java.lang.Float"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="49" splitType="Stretch">
+			<image>
+				<reportElement uuid="6b5b83ab-5d31-45ec-85e3-80be2c8cfc8f" x="84" y="0" width="92" height="49"/>
+				<imageExpression><![CDATA["C:\\Users\\dfelix3\\Pictures\\eteab_50.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="0af747bc-8411-4574-9456-991f2f6d1b26" x="224" y="0" width="272" height="49"/>
+				<imageExpression><![CDATA["C:\\Users\\dfelix3\\Pictures\\ctps_50.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fa05db26-a4d8-43bd-b352-9e88417edd45" style="SUBTITULO" x="0" y="0" width="555" height="18"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.unidade} + " - " + $R{relatorio.codigo.unidade} + " - " + $R{relatorio.cidade}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="eb929345-533f-4133-a51b-923b01f66bcf" style="SUBTITULO" x="0" y="18" width="555" height="18"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{relatorio.termoatribuicao.titulo} 
++ " - " 
++ $P{P_SEMESTRE} 
++ $R{relatorio.numero.primeiro} 
++" "
++ $R{relatorio.semestre}
++ " / " 
++ $P{P_ANO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="80" splitType="Stretch">
+			<textField>
+				<reportElement uuid="00a56ab5-afe3-4b83-98c6-ebab9ee954d8" style="BASE_NEGRITO" x="0" y="0" width="52" height="13"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.professor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="6a8f8e80-3f4b-493f-9cff-110f7ecda018" style="BASE" x="52" y="0" width="282" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Professor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="68a5a5c6-baf1-4888-a3d0-fb9b5fccb291" style="BASE_NEGRITO" x="334" y="0" width="22" height="13"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.rg}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="1cd76ee0-d61c-4d49-a6b1-be703636b902" style="BASE" x="356" y="0" width="199" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{RG}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ee210d9b-42f0-429a-9403-f09eace88192" style="BASE_NEGRITO" x="0" y="13" width="52" height="13"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.contrato}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="ef44bae0-9560-430d-8377-077383d6306d" style="BASE" x="52" y="13" width="153" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Contrato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="68518f59-6ea3-40b7-a111-e5ab8db400fb" style="BASE_NEGRITO" x="205" y="13" width="58" height="13"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="039368c4-b191-406f-b86d-22de5efc2e30" style="BASE" x="263" y="13" width="71" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Matricula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="1d7a4ec4-c5f5-4ce6-9d1d-635632c331c7" style="BASE_NEGRITO" x="2" y="45" width="553" height="13"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$R{relatorio.total}
++ " " + ($F{TotalCH} == null ? "0" : new java.text.DecimalFormat("###0.0").format($F{TotalCH})) 
++" " +$R{relatorio.total.horaaula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="54991176-f409-40c8-aae4-026aec5924b6" style="BASE_NEGRITO" x="334" y="13" width="67" height="13"/>
+				<textElement markup="none"/>
+				<textFieldExpression><![CDATA[$R{relatorio.campo.categoria}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="039368c4-b191-406f-b86d-22de5efc2e30" style="BASE" x="401" y="13" width="154" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{Categoria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2327f4ed-ef94-4964-a25e-522887ac7967" style="SUBTITULO_BORDA" mode="Opaque" x="0" y="64" width="555" height="16" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{relatorio.observacao.substituicao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b1db4a8c-c6fa-4f71-9e10-fac174458023" style="BASE_NEGRITO" x="0" y="29" width="555" height="13"/>
+				<textElement textAlignment="Center">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{relatorio.aviso.inicio.cargahoraria} 
++ new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{Inicio})]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="60" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="e3ae797a-adc0-43b2-a0d6-b563bfc5d1a4" key="table" style="table" isPrintRepeatedValues="false" x="0" y="0" width="555" height="57"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
+					<datasetRun subDataset="AtribuicaoDataset" uuid="57a33d08-d66c-490e-87e1-2e3e5191193e">
+						<datasetParameter name="P_ANO">
+							<datasetParameterExpression><![CDATA[$P{P_ANO}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="P_SEMESTRE">
+							<datasetParameterExpression><![CDATA[$P{P_SEMESTRE}]]></datasetParameterExpression>
+						</datasetParameter>
+						<datasetParameter name="P_PROFESSOR">
+							<datasetParameterExpression><![CDATA[$P{P_CODIGO_PROFESSOR}]]></datasetParameterExpression>
+						</datasetParameter>
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:columnGroup uuid="d3e19181-38a6-47d8-a8d1-382b7f7f70a8" width="485">
+						<jr:tableFooter style="table_TH" height="19" rowSpan="1">
+							<staticText>
+								<reportElement uuid="025791f3-5966-4ba7-9c6e-9cf929176f9b" style="TITULO_COLUNA" x="0" y="0" width="394" height="19"/>
+								<textElement textAlignment="Right"/>
+								<text><![CDATA[Total da Carga Horária Semanal:]]></text>
+							</staticText>
+						</jr:tableFooter>
+						<jr:column uuid="d2e0e3b8-e2d2-46a9-a0b5-9f0724b0211a" width="268">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="b35082e9-f309-4975-b5f4-d7b16e5c4817" style="TITULO_COLUNA" x="0" y="0" width="268" height="30"/>
+									<textElement>
+										<font size="10"/>
+									</textElement>
+									<text><![CDATA[Componente Curricular]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter height="0" rowSpan="1"/>
+							<jr:detailCell style="table_TD" height="18" rowSpan="1">
+								<textField isStretchWithOverflow="true">
+									<reportElement uuid="2b0c426b-28bd-4503-a42a-dfe20c470f0a" style="CELULA_TABELA" x="0" y="0" width="268" height="18"/>
+									<textElement/>
+									<textFieldExpression><![CDATA[$F{ComponenteCurricular}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column uuid="19c20459-c0c6-44a9-8e19-7f8e27bb0420" width="35">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="8e77ecdb-56e2-4a5d-a57d-168ae83f46aa" style="TITULO_COLUNA" x="0" y="0" width="35" height="30"/>
+									<textElement markup="html">
+										<font size="10"/>
+									</textElement>
+									<text><![CDATA[Turma]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter height="0" rowSpan="1"/>
+							<jr:detailCell style="table_TD" height="18" rowSpan="1">
+								<textField>
+									<reportElement uuid="c1a31ad5-8b03-4e46-aae0-19623fb8dde5" style="CELULA_TABELA" x="0" y="0" width="35" height="18"/>
+									<textElement textAlignment="Center"/>
+									<textFieldExpression><![CDATA[$F{Turma}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column uuid="8f9a1b11-972e-40cf-840a-c4a8ac72737e" width="182">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="235340ae-5f9d-43f9-a6ec-bda75f68460f" style="TITULO_COLUNA" x="0" y="0" width="182" height="30"/>
+									<textElement>
+										<font size="10"/>
+									</textElement>
+									<text><![CDATA[Habilitação]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter height="0" rowSpan="1"/>
+							<jr:detailCell style="table_TD" height="18" rowSpan="1">
+								<textField isStretchWithOverflow="true">
+									<reportElement uuid="b46f153d-0f1a-477f-9b9c-8ba8584c32cf" style="CELULA_TABELA" x="0" y="0" width="182" height="18"/>
+									<textElement/>
+									<textFieldExpression><![CDATA[$F{Habilitacao}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:columnGroup>
+					<jr:columnGroup uuid="e0ed12ac-55fc-435a-aa4d-d60abfc30063" width="70">
+						<jr:tableFooter style="table_TH" height="19" rowSpan="1">
+							<textField pattern="###0.0" isBlankWhenNull="true">
+								<reportElement uuid="471f6c39-925e-47b8-a3a6-c7b2880c6ed6" style="TITULO_COLUNA_BORDA" x="0" y="0" width="35" height="19"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{V_SOMA_CH_LIVRE}]]></textFieldExpression>
+							</textField>
+							<textField pattern="###0.0" isBlankWhenNull="true">
+								<reportElement uuid="e6bb9638-8419-4133-ae6a-8a746e719cc3" style="TITULO_COLUNA_BORDA" x="35" y="0" width="35" height="19"/>
+								<textElement textAlignment="Center"/>
+								<textFieldExpression><![CDATA[$V{V_SOMA_CH_SUB}]]></textFieldExpression>
+							</textField>
+						</jr:tableFooter>
+						<jr:column uuid="675836f8-3182-41b1-925e-5e5d02863023" width="35">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="7643fbfe-4ecb-4312-9a5e-68df1ea9b652" style="TITULO_COLUNA" x="0" y="0" width="35" height="30"/>
+									<textElement textAlignment="Center" markup="html">
+										<font size="10"/>
+									</textElement>
+									<text><![CDATA[CH<br>(Livre)]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="table_TH" height="0" rowSpan="1"/>
+							<jr:detailCell style="table_TD" height="18" rowSpan="1">
+								<textField pattern="###0.0" isBlankWhenNull="true">
+									<reportElement uuid="5fa5eb29-5ba0-43d9-abe5-cc34a649cbf2" style="CELULA_TABELA" x="0" y="0" width="35" height="18"/>
+									<textElement textAlignment="Center"/>
+									<textFieldExpression><![CDATA[$V{V_CH_LIVRE}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+						<jr:column uuid="1e1d00e7-3006-4c65-b957-c27cb4cef69f" width="35">
+							<jr:tableHeader style="table_TH" height="30" rowSpan="1">
+								<staticText>
+									<reportElement uuid="7643fbfe-4ecb-4312-9a5e-68df1ea9b652" style="TITULO_COLUNA" x="0" y="0" width="35" height="30"/>
+									<textElement textAlignment="Center" markup="html">
+										<font size="10"/>
+									</textElement>
+									<text><![CDATA[CH<br>(Subs)]]></text>
+								</staticText>
+							</jr:tableHeader>
+							<jr:tableFooter style="table_TH" height="0" rowSpan="1"/>
+							<jr:detailCell style="table_TD" height="18" rowSpan="1">
+								<textField pattern="###0.0" isBlankWhenNull="true">
+									<reportElement uuid="d0b669c6-c93e-435d-b034-4dba45272127" style="CELULA_TABELA" x="0" y="0" width="35" height="18"/>
+									<textElement textAlignment="Center"/>
+									<textFieldExpression><![CDATA[$F{CHSub}]]></textFieldExpression>
+								</textField>
+							</jr:detailCell>
+						</jr:column>
+					</jr:columnGroup>
+				</jr:table>
+			</componentElement>
+		</band>
+		<band height="231">
+			<textField>
+				<reportElement uuid="f1af2a42-0d25-4a7d-b86d-3de7004fbc76" x="0" y="0" width="555" height="104"/>
+				<textElement textAlignment="Left" markup="none">
+					<font size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{relatorio.informacoes.complementares}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="447cc92e-bca3-4347-a959-4713dc68a079" x="0" y="166" width="555" height="1"/>
+			</line>
+			<textField pattern="">
+				<reportElement uuid="12ba1459-9d21-41ad-bb8e-89c0065a0401" style="BASE_NEGRITO" x="289" y="172" width="266" height="13"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$R{relatorio.cidade} + ", " + new java.text.SimpleDateFormat("dd 'de' MMMMM 'de' yyyy").format(new java.util.Date())]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="447cc92e-bca3-4347-a959-4713dc68a079" x="0" y="126" width="555" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="447cc92e-bca3-4347-a959-4713dc68a079" x="0" y="146" width="555" height="1"/>
+			</line>
+			<textField pattern="&apos;De acordo: &apos; dd/MM/yyyy">
+				<reportElement uuid="12ba1459-9d21-41ad-bb8e-89c0065a0401" style="BASE_NEGRITO" x="0" y="172" width="163" height="13"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="447cc92e-bca3-4347-a959-4713dc68a079" x="15" y="210" width="250" height="1"/>
+			</line>
+			<line>
+				<reportElement uuid="447cc92e-bca3-4347-a959-4713dc68a079" x="287" y="211" width="250" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="ead8e63a-f57c-49da-b3a3-6b2926b59157" style="BASE" x="15" y="211" width="248" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$R{relatorio.assinatura.professor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ead8e63a-f57c-49da-b3a3-6b2926b59157" style="BASE" x="284" y="211" width="253" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<textFieldExpression><![CDATA[$R{relatorio.assinatura.diretor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
