@@ -197,12 +197,17 @@ public abstract class AbstractController implements ActionListener, WindowListen
     }
 
     @Override
-    public void windowActivated(WindowEvent windowEvent) {
+    public void windowActivated(WindowEvent e) {
+        this.ativarJanela(e);
     }
 
     @Override
-    public void windowDeactivated(WindowEvent windowEvent) {
+    public void windowDeactivated(WindowEvent e) {
+        this.desativarJanela(e);
     }
+
+    public abstract void ativarJanela(WindowEvent e);
+    public abstract void desativarJanela(WindowEvent e);
 
     @Override
     public void keyTyped(KeyEvent e) {

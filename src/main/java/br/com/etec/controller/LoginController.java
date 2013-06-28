@@ -9,6 +9,7 @@ import br.com.etec.service.LoginService;
 import br.com.etec.view.LoginView;
 import br.com.etec.view.action.AbstractAction;
 import java.awt.HeadlessException;
+import java.awt.event.WindowEvent;
 import javax.annotation.PostConstruct;
 import javax.swing.JOptionPane;
 import org.apache.log4j.Level;
@@ -57,6 +58,16 @@ public class LoginController extends AbstractController {
         this.loginView.addKeyListener(this);
         this.initHandlers();
         this.loginView.setVisible(true);
+    }
+
+    @Override
+    public void ativarJanela(WindowEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void desativarJanela(WindowEvent e) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     private void initHandlers() {
